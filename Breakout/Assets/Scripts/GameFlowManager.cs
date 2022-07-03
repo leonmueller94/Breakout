@@ -9,10 +9,10 @@ public class GameFlowManager : MonoBehaviour
     [SerializeField] private bool _showCursor = false;
 
     [Header("Game Settings")]
-    [SerializeField] private int _health = 3;
     [SerializeField] private List<Level> _levels = new List<Level>();
 
     [Header("References")]
+    [SerializeField] private IntVariable _health;
     [SerializeField] private GameObject _ball = null;
     [SerializeField] private GameObject _paddle = null;
 
@@ -38,6 +38,9 @@ public class GameFlowManager : MonoBehaviour
     void Start()
     {
         SetCursorVisible();
+        SubscribeToLevels();
+        SetAllLevelsInactive();
+        SetLevelActive(levelIndex: 0);
 
         _deadZoneTrigger = DeadZoneTrigger.Instance;
         _deadZoneTrigger.BallHitDeadZone += OnBallHitDeadZone;
@@ -46,6 +49,41 @@ public class GameFlowManager : MonoBehaviour
     private void SetCursorVisible()
     {
         Cursor.visible = _showCursor;
+    }
+
+    private void SubscribeToLevels()
+    {
+        foreach (var level in _levels)
+        {
+            level.LevelCompleted += OnLevelCompleted;
+        }
+    }
+
+    private void OnLevelCompleted(Level level)
+    {
+        if (_levels.Contains(level))
+        {
+            level.gameObject.SetActive(false);
+            _levels.Remove(level);
+        }
+
+        SetLevelActive(levelIndex: 0);
+    }
+
+    private void SetLevelActive(int levelIndex)
+    {
+        if (_levels.Count > 0)
+        {
+            _levels[levelIndex].gameObject.SetActive(true);
+        }
+    }
+
+    private void SetAllLevelsInactive()
+    {
+        foreach (var level in _levels)
+        {
+            level.gameObject?.SetActive(false);
+        }
     }
 
     private void OnBallHitDeadZone()
@@ -64,13 +102,13 @@ public class GameFlowManager : MonoBehaviour
 
     private void DecreaseHealth(int amount)
     {
-        _health -= amount;
+        _health.RuntimeValue -= amount;
         CheckIfDead();
     }
 
     private void CheckIfDead()
     {
-        if (_health <= 0)
+        if (_health.RuntimeValue <= 0)
         {
             Debug.Log("Game Over!");
         }
@@ -83,7 +121,4 @@ public class GameFlowManager : MonoBehaviour
             _deadZoneTrigger.BallHitDeadZone -= OnBallHitDeadZone;
         }
     }
-
-
-
 }

@@ -11,6 +11,8 @@ public class Brick : MonoBehaviour
     private BoxCollider2D _boxCollider;
     private SoundManager _soundManager;
 
+    public Action OnBrickDestroyed;
+
     private void Start()
     {
         _boxCollider = GetComponent<BoxCollider2D>();
@@ -51,6 +53,7 @@ public class Brick : MonoBehaviour
 
     private void Die()
     {
+        OnBrickDestroyed?.Invoke();
         Destroy(this.gameObject);
     }
 }
