@@ -47,7 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bec71c2a99a80514cadd62739f45fc7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _showCursor: 0
   _startForce: 7.5
   _paddleHitAudioClip: {fileID: 8300000, guid: 7ee93d4c0720045798bbbb1c76c4d674, type: 3}
   _mainCamera: {fileID: 0}
