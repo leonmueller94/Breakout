@@ -6,7 +6,6 @@ using UnityEngine;
 public class Paddle : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] private bool _showCursor = false;
     [SerializeField] private float _startForce = 4f;
     [SerializeField] private AudioClip _paddleHitAudioClip = null;
 
@@ -20,15 +19,9 @@ public class Paddle : MonoBehaviour
 
     private void Start()
     {
-        SetCursorVisible();
         GetComponentRefs();
         CalculateScreenBounds();
         ParentBallToPaddle();
-    }
-
-    private void SetCursorVisible()
-    {
-        Cursor.visible = _showCursor;
     }
 
     private void GetComponentRefs()
